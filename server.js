@@ -6,6 +6,7 @@ const userRoutes = require("./routes/user.routes");
 const produitRoutes = require("./routes/produit.routes");
 const categorieRoutes = require("./routes/categorie.routes");
 const commandeRoutes = require("./routes/commande.routes");
+const ligneCommandeRoutes = require("./routes/lignecommande.routes");
 
 dotenv.config();
 
@@ -20,6 +21,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/produits", produitRoutes);
 app.use("/api/categories", categorieRoutes);
 app.use("/api/commandes", commandeRoutes);
+
+app.use("/api/lignes-commande", ligneCommandeRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
