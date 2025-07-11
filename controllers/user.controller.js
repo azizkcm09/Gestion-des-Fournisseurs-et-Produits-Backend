@@ -1,27 +1,87 @@
-// controllers/user.controller.js
-import { PrismaClient } from "@prisma/client";
-
+const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
+const bcrypt = require("bcrypt");
+//create user
+const createUser = async (req, res) => {
+  try {
+    const { mdp, ...rest } = req.body;
 
-// Get all users
-export const getUsers = async (req, res) => {
+    // Hash the password using bcrypt
+    const hashedPassword = await bcrypt.hash(mdp, 10); // 10 = salt rounds
+
+    const user = await prisma.user.create({
+      data: {
+        ...rest,
+        mdp: hashedPassword,
+      },
+    });
+
+    res.status(201).json(user);
+  } catch (error) {
+    console.error("❌ Error in createUser:", error);
+    res.status(400).json({ error: error.message });
+  }
+};
+//get all users
+const getAllUsers = async (req, res) => {
   try {
     const users = await prisma.user.findMany();
-    res.json(users);
+    res.status(200).json(users);
   } catch (error) {
-    res.status(500).json({ error: "Something went wrong" });
+    res.status(500).json({ error: error.message });
+  }
+};
+//get userbyId
+const getUserById = async (req, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.params.id },
+    });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+//update user
+const updateUser = async (req, res) => {
+  try {
+    const { mdp, ...rest } = req.body;
+    let dataToUpdate = { ...rest };
+
+    if (mdp) {
+      const hashedPassword = await bcrypt.hash(mdp, 10);
+      dataToUpdate.mdp = hashedPassword;
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: req.params.id },
+      data: dataToUpdate,
+    });
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error("❌ Error in updateUser:", error);
+    res.status(400).json({ error: error.message });
   }
 };
 
-// Create a new user
-export const createUser = async (req, res) => {
-  const { name, email } = req.body;
+//delete user
+const deleteUser = async (req, res) => {
   try {
-    const newUser = await prisma.user.create({
-      data: { name, email },
+    await prisma.user.delete({
+      where: { id: req.params.id },
     });
-    res.status(201).json(newUser);
+    res.json({ message: "User deleted" });
   } catch (error) {
-    res.status(400).json({ error: "Could not create user" });
+    res.status(400).json({ error: error.message });
   }
+};
+
+module.exports = {
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
 };

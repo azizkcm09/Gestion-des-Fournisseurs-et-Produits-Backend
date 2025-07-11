@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
@@ -14,6 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^6.11.0",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^17.0.1",
     "express": "^5.1.0"
   },
