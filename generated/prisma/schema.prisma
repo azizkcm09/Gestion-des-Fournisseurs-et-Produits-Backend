@@ -1,0 +1,174 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ENUMS
+enum Statut {
+  ACTIF
+  INACTIF
+  BLOQUE
+}
+
+enum Role {
+  ADMIN
+  CLIENT
+  FOURNISSEUR
+  LIVREUR
+}
+
+enum StatutProduit {
+  DISPONIBLE
+  EN_RUPTURE
+  ARCHIVE
+}
+
+enum StatutCommande {
+  EN_ATTENTE
+  CONFIRMEE
+  EN_PREPARATION
+  EXPEDIEE
+  LIVREE
+  ANNULEE
+}
+
+enum StatutLivraison {
+  EN_TRANSIT
+  LIVREE
+  EN_ATTENTE
+}
+
+enum StatutAlerte {
+  ACTIVE
+  RESOLUE
+}
+
+// MODELS
+
+model User {
+  id        String   @id @default(cuid())
+  nom       String
+  prenom    String
+  email     String   @unique
+  mdp       String
+  adresse   String
+  statut    Statut
+  role      Role
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  produits      Produit[] // Fournisseur
+  commandes     Commande[] // Client
+  livraisons    Livraison[] // Livreur
+  rapports      Rapport[] // Admin
+  alertesGerees AlerteStock[] // Admin
+}
+
+model Produit {
+  idProduit     String        @id @default(cuid())
+  nom           String
+  description   String
+  prix          Float
+  quantiteStock Int
+  typeProduit   String
+  imageURL      String
+  dateAjout     DateTime      @default(now())
+  statutProduit StatutProduit
+
+  // Relations
+  categorieId String
+  categorie   Categorie @relation(fields: [categorieId], references: [idCategorie])
+
+  fournisseurId String
+  fournisseur   User   @relation(fields: [fournisseurId], references: [id])
+
+  lignesCommande LigneCommande[]
+  alertesStock   AlerteStock[]
+}
+
+model Categorie {
+  idCategorie          String @id @default(cuid())
+  nomCategorie         String
+  descriptionCategorie String
+  typeCategorie        String
+  imageCategorie       String
+
+  produits Produit[]
+}
+
+model Commande {
+  idCommande       String         @id @default(cuid())
+  numeroCommande   String         @unique
+  dateCommande     DateTime       @default(now())
+  statutCommande   StatutCommande
+  totalCommande    Float
+  taxesAppliquees  Float
+  adresseLivraison String
+  modePaiement     String
+  datePaiement     DateTime?
+
+  // Relations
+  clientId String
+  client   User   @relation(fields: [clientId], references: [id])
+
+  lignesCommande LigneCommande[]
+  livraison      Livraison?
+}
+
+model LigneCommande {
+  idLigneCommande String @id @default(cuid())
+  quantite        Int
+  prixUnitaire    Float
+
+  commandeId String
+  commande   Commande @relation(fields: [commandeId], references: [idCommande])
+
+  produitId String
+  produit   Produit @relation(fields: [produitId], references: [idProduit])
+}
+
+model Livraison {
+  idLivraison            String          @id @default(cuid())
+  dateExpedition         DateTime
+  dateLivraisonPrevue    DateTime
+  dateLivraisonEffective DateTime?
+  statutLivraison        StatutLivraison
+  notesLivreur           String?
+  signatureClient        String?
+
+  commandeId String   @unique
+  commande   Commande @relation(fields: [commandeId], references: [idCommande])
+
+  livreurId String
+  livreur   User   @relation(fields: [livreurId], references: [id])
+}
+
+model Rapport {
+  idRapport      String   @id @default(cuid())
+  typeRapport    String
+  dateGeneration DateTime @default(now())
+  periode        String
+  contenuPDF     String
+
+  adminId String
+  admin   User   @relation(fields: [adminId], references: [id])
+}
+
+model AlerteStock {
+  idAlerte     String       @id @default(cuid())
+  seuilMinimum Int
+  dateAlerte   DateTime     @default(now())
+  statutAlerte StatutAlerte
+
+  produitId String
+  produit   Produit @relation(fields: [produitId], references: [idProduit])
+
+  adminId String
+  admin   User   @relation(fields: [adminId], references: [id])
+}
