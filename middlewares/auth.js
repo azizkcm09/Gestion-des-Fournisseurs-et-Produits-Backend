@@ -31,8 +31,17 @@ const isClient = (req, res, next) => {
   }
   next();
 };
+const isFournisseur = (req, res, next) => {
+  if (req.user.role !== "FOURNISSEUR") {
+    return res
+      .status(403)
+      .json({ message: "Accès interdit: fournisseur uniquement" });
+  }
+  next();
+};
 module.exports = {
   authenticateToken,
   isAdmin,
   isClient,
+  isFournisseur,
 };
