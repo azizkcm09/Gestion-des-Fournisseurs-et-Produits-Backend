@@ -56,9 +56,9 @@ model User {
   prenom    String
   email     String   @unique
   mdp       String
-  adresse   String
-  statut    Statut
-  role      Role
+  adresse   String?
+  statut    Statut @default(ACTIF)
+  role      Role   @default(CLIENT)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
