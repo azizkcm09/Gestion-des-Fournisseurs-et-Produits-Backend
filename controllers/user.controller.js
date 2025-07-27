@@ -1,6 +1,78 @@
 const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+const registerUser = async (req, res) => {
+  try {
+    const { nom, prenom, email, mdp } = req.body;
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(mdp, 10);
+
+    // Create the new user with role 'client'
+    const newUser = await prisma.user.create({
+      data: {
+        nom,
+        prenom,
+        email,
+        mdp: hashedPassword,
+      },
+    });
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: newUser.id, role: newUser.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    // Remove password before sending response
+    const { mdp: _, ...userWithoutPassword } = newUser;
+
+    res.status(201).json({ token, user: userWithoutPassword });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ message: err.message });
+  }
+};
+
+const loginUser = async (req, res) => {
+  try {
+    const { email, mdp } = req.body;
+
+    // Find user by email
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    // Compare password
+    const isMatch = await bcrypt.compare(mdp, user.mdp);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Mot de passe incorrect" });
+    }
+
+    // Generate JWT
+    const token = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    // Remove password before sending user object
+    const { mdp: _, ...userWithoutPassword } = user;
+
+    res.json({ token, user: userWithoutPassword });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
 //create user
 const createUser = async (req, res) => {
   try {
@@ -84,4 +156,6 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
+  registerUser,
+  loginUser,
 };
