@@ -155,7 +155,7 @@ model Rapport {
   dateGeneration DateTime @default(now())
   periode        String
   contenuPDF     String
-
+  color String?
   adminId String
   admin   User   @relation(fields: [adminId], references: [id])
 }
