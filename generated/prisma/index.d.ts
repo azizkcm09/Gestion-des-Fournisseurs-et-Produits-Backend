@@ -8769,6 +8769,7 @@ export namespace Prisma {
     dateGeneration: Date | null
     periode: string | null
     contenuPDF: string | null
+    color: string | null
     adminId: string | null
   }
 
@@ -8778,6 +8779,7 @@ export namespace Prisma {
     dateGeneration: Date | null
     periode: string | null
     contenuPDF: string | null
+    color: string | null
     adminId: string | null
   }
 
@@ -8787,6 +8789,7 @@ export namespace Prisma {
     dateGeneration: number
     periode: number
     contenuPDF: number
+    color: number
     adminId: number
     _all: number
   }
@@ -8798,6 +8801,7 @@ export namespace Prisma {
     dateGeneration?: true
     periode?: true
     contenuPDF?: true
+    color?: true
     adminId?: true
   }
 
@@ -8807,6 +8811,7 @@ export namespace Prisma {
     dateGeneration?: true
     periode?: true
     contenuPDF?: true
+    color?: true
     adminId?: true
   }
 
@@ -8816,6 +8821,7 @@ export namespace Prisma {
     dateGeneration?: true
     periode?: true
     contenuPDF?: true
+    color?: true
     adminId?: true
     _all?: true
   }
@@ -8898,6 +8904,7 @@ export namespace Prisma {
     dateGeneration: Date
     periode: string
     contenuPDF: string
+    color: string | null
     adminId: string
     _count: RapportCountAggregateOutputType | null
     _min: RapportMinAggregateOutputType | null
@@ -8924,6 +8931,7 @@ export namespace Prisma {
     dateGeneration?: boolean
     periode?: boolean
     contenuPDF?: boolean
+    color?: boolean
     adminId?: boolean
     admin?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["rapport"]>
@@ -8934,6 +8942,7 @@ export namespace Prisma {
     dateGeneration?: boolean
     periode?: boolean
     contenuPDF?: boolean
+    color?: boolean
     adminId?: boolean
     admin?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["rapport"]>
@@ -8944,6 +8953,7 @@ export namespace Prisma {
     dateGeneration?: boolean
     periode?: boolean
     contenuPDF?: boolean
+    color?: boolean
     adminId?: boolean
     admin?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["rapport"]>
@@ -8954,10 +8964,11 @@ export namespace Prisma {
     dateGeneration?: boolean
     periode?: boolean
     contenuPDF?: boolean
+    color?: boolean
     adminId?: boolean
   }
 
-  export type RapportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"idRapport" | "typeRapport" | "dateGeneration" | "periode" | "contenuPDF" | "adminId", ExtArgs["result"]["rapport"]>
+  export type RapportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"idRapport" | "typeRapport" | "dateGeneration" | "periode" | "contenuPDF" | "color" | "adminId", ExtArgs["result"]["rapport"]>
   export type RapportInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     admin?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -8979,6 +8990,7 @@ export namespace Prisma {
       dateGeneration: Date
       periode: string
       contenuPDF: string
+      color: string | null
       adminId: string
     }, ExtArgs["result"]["rapport"]>
     composites: {}
@@ -9409,6 +9421,7 @@ export namespace Prisma {
     readonly dateGeneration: FieldRef<"Rapport", 'DateTime'>
     readonly periode: FieldRef<"Rapport", 'String'>
     readonly contenuPDF: FieldRef<"Rapport", 'String'>
+    readonly color: FieldRef<"Rapport", 'String'>
     readonly adminId: FieldRef<"Rapport", 'String'>
   }
     
@@ -11043,6 +11056,7 @@ export namespace Prisma {
     dateGeneration: 'dateGeneration',
     periode: 'periode',
     contenuPDF: 'contenuPDF',
+    color: 'color',
     adminId: 'adminId'
   };
 
@@ -11711,6 +11725,7 @@ export namespace Prisma {
     dateGeneration?: DateTimeFilter<"Rapport"> | Date | string
     periode?: StringFilter<"Rapport"> | string
     contenuPDF?: StringFilter<"Rapport"> | string
+    color?: StringNullableFilter<"Rapport"> | string | null
     adminId?: StringFilter<"Rapport"> | string
     admin?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -11721,6 +11736,7 @@ export namespace Prisma {
     dateGeneration?: SortOrder
     periode?: SortOrder
     contenuPDF?: SortOrder
+    color?: SortOrderInput | SortOrder
     adminId?: SortOrder
     admin?: UserOrderByWithRelationInput
   }
@@ -11734,6 +11750,7 @@ export namespace Prisma {
     dateGeneration?: DateTimeFilter<"Rapport"> | Date | string
     periode?: StringFilter<"Rapport"> | string
     contenuPDF?: StringFilter<"Rapport"> | string
+    color?: StringNullableFilter<"Rapport"> | string | null
     adminId?: StringFilter<"Rapport"> | string
     admin?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "idRapport">
@@ -11744,6 +11761,7 @@ export namespace Prisma {
     dateGeneration?: SortOrder
     periode?: SortOrder
     contenuPDF?: SortOrder
+    color?: SortOrderInput | SortOrder
     adminId?: SortOrder
     _count?: RapportCountOrderByAggregateInput
     _max?: RapportMaxOrderByAggregateInput
@@ -11759,6 +11777,7 @@ export namespace Prisma {
     dateGeneration?: DateTimeWithAggregatesFilter<"Rapport"> | Date | string
     periode?: StringWithAggregatesFilter<"Rapport"> | string
     contenuPDF?: StringWithAggregatesFilter<"Rapport"> | string
+    color?: StringNullableWithAggregatesFilter<"Rapport"> | string | null
     adminId?: StringWithAggregatesFilter<"Rapport"> | string
   }
 
@@ -12342,6 +12361,7 @@ export namespace Prisma {
     dateGeneration?: Date | string
     periode: string
     contenuPDF: string
+    color?: string | null
     admin: UserCreateNestedOneWithoutRapportsInput
   }
 
@@ -12351,6 +12371,7 @@ export namespace Prisma {
     dateGeneration?: Date | string
     periode: string
     contenuPDF: string
+    color?: string | null
     adminId: string
   }
 
@@ -12360,6 +12381,7 @@ export namespace Prisma {
     dateGeneration?: DateTimeFieldUpdateOperationsInput | Date | string
     periode?: StringFieldUpdateOperationsInput | string
     contenuPDF?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
     admin?: UserUpdateOneRequiredWithoutRapportsNestedInput
   }
 
@@ -12369,6 +12391,7 @@ export namespace Prisma {
     dateGeneration?: DateTimeFieldUpdateOperationsInput | Date | string
     periode?: StringFieldUpdateOperationsInput | string
     contenuPDF?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
     adminId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -12378,6 +12401,7 @@ export namespace Prisma {
     dateGeneration?: Date | string
     periode: string
     contenuPDF: string
+    color?: string | null
     adminId: string
   }
 
@@ -12387,6 +12411,7 @@ export namespace Prisma {
     dateGeneration?: DateTimeFieldUpdateOperationsInput | Date | string
     periode?: StringFieldUpdateOperationsInput | string
     contenuPDF?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RapportUncheckedUpdateManyInput = {
@@ -12395,6 +12420,7 @@ export namespace Prisma {
     dateGeneration?: DateTimeFieldUpdateOperationsInput | Date | string
     periode?: StringFieldUpdateOperationsInput | string
     contenuPDF?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
     adminId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -13044,6 +13070,7 @@ export namespace Prisma {
     dateGeneration?: SortOrder
     periode?: SortOrder
     contenuPDF?: SortOrder
+    color?: SortOrder
     adminId?: SortOrder
   }
 
@@ -13053,6 +13080,7 @@ export namespace Prisma {
     dateGeneration?: SortOrder
     periode?: SortOrder
     contenuPDF?: SortOrder
+    color?: SortOrder
     adminId?: SortOrder
   }
 
@@ -13062,6 +13090,7 @@ export namespace Prisma {
     dateGeneration?: SortOrder
     periode?: SortOrder
     contenuPDF?: SortOrder
+    color?: SortOrder
     adminId?: SortOrder
   }
 
@@ -14118,6 +14147,7 @@ export namespace Prisma {
     dateGeneration?: Date | string
     periode: string
     contenuPDF: string
+    color?: string | null
   }
 
   export type RapportUncheckedCreateWithoutAdminInput = {
@@ -14126,6 +14156,7 @@ export namespace Prisma {
     dateGeneration?: Date | string
     periode: string
     contenuPDF: string
+    color?: string | null
   }
 
   export type RapportCreateOrConnectWithoutAdminInput = {
@@ -14285,6 +14316,7 @@ export namespace Prisma {
     dateGeneration?: DateTimeFilter<"Rapport"> | Date | string
     periode?: StringFilter<"Rapport"> | string
     contenuPDF?: StringFilter<"Rapport"> | string
+    color?: StringNullableFilter<"Rapport"> | string | null
     adminId?: StringFilter<"Rapport"> | string
   }
 
@@ -15371,6 +15403,7 @@ export namespace Prisma {
     dateGeneration?: Date | string
     periode: string
     contenuPDF: string
+    color?: string | null
   }
 
   export type AlerteStockCreateManyAdminInput = {
@@ -15503,6 +15536,7 @@ export namespace Prisma {
     dateGeneration?: DateTimeFieldUpdateOperationsInput | Date | string
     periode?: StringFieldUpdateOperationsInput | string
     contenuPDF?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RapportUncheckedUpdateWithoutAdminInput = {
@@ -15511,6 +15545,7 @@ export namespace Prisma {
     dateGeneration?: DateTimeFieldUpdateOperationsInput | Date | string
     periode?: StringFieldUpdateOperationsInput | string
     contenuPDF?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RapportUncheckedUpdateManyWithoutAdminInput = {
@@ -15519,6 +15554,7 @@ export namespace Prisma {
     dateGeneration?: DateTimeFieldUpdateOperationsInput | Date | string
     periode?: StringFieldUpdateOperationsInput | string
     contenuPDF?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AlerteStockUpdateWithoutAdminInput = {

@@ -194,6 +194,7 @@ exports.Prisma.RapportScalarFieldEnum = {
   dateGeneration: 'dateGeneration',
   periode: 'periode',
   contenuPDF: 'contenuPDF',
+  color: 'color',
   adminId: 'adminId'
 };
 
