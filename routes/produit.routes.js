@@ -2,13 +2,19 @@ const express = require("express");
 const router = express.Router();
 const produitController = require("../controllers/produit.controller");
 const { authenticateToken, isFournisseur } = require("../middlewares/auth");
+const upload = require("../middlewares/upload");
 
 router.post(
   "/create",
-  authenticateToken,
-  isFournisseur,
+  upload.single("imageURL"),
   produitController.createProduit
 );
+// router.post(
+//   "/create",
+//   authenticateToken,
+//   isFournisseur,
+//   produitController.createProduit
+// );
 router.get("/", produitController.getAllProduits);
 router.get("/:id", produitController.getProduitById);
 router.put(
