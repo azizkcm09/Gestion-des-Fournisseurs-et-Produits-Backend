@@ -94,15 +94,38 @@ const createUser = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-//get all users
+//get all users with pagination
 const getAllUsers = async (req, res) => {
   try {
-    const users = await prisma.user.findMany();
-    res.status(200).json(users);
+    // Récupérer page et limit depuis query params, avec valeurs par défaut
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 4;
+
+    // Calcul du décalage (skip)
+    const skip = (page - 1) * limit;
+
+    // Récupérer le nombre total d'utilisateurs
+    const totalUsers = await prisma.user.count();
+
+    // Récupérer les utilisateurs paginés
+    const users = await prisma.user.findMany({
+      skip,
+      take: limit,
+      orderBy: { createdAt: "desc" }, // facultatif : pour trier
+    });
+
+    res.status(200).json({
+      page,
+      limit,
+      totalUsers,
+      totalPages: Math.ceil(totalUsers / limit),
+      users,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 //get userbyId
 const getUserById = async (req, res) => {
   try {
