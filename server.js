@@ -10,6 +10,7 @@ const ligneCommandeRoutes = require("./routes/lignecommande.routes");
 const livraisonRoutes = require("./routes/livraison.routes");
 const rapportRoutes = require("./routes/rapport.routes");
 const alerteRoutes = require("./routes/alertestock.routes");
+const dashboardRoutes = require("./routes/dashboard.routes");
 
 dotenv.config();
 
@@ -27,8 +28,8 @@ app.use("/api/commandes", commandeRoutes);
 app.use("/api/lignes-commande", ligneCommandeRoutes);
 app.use("/api/livraisons", livraisonRoutes);
 app.use("/api/rapports", rapportRoutes);
-
 app.use("/api/alertes-stock", alerteRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);

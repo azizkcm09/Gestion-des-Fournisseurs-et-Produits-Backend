@@ -59,6 +59,7 @@ model User {
   adresse   String?
   statut    Statut @default(ACTIF)
   role      Role   @default(CLIENT)
+  image String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

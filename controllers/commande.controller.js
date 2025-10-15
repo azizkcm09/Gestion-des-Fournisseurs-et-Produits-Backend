@@ -15,7 +15,31 @@ const createCommande = async (req, res) => {
 const getAllCommandes = async (req, res) => {
   try {
     const commandes = await prisma.commande.findMany({
-      include: { lignesCommande: true, livraison: true },
+      include: {
+        client: {
+          select: {
+            id: true,
+            nom: true,
+            prenom: true,
+            email: true,
+          },
+        },
+        lignesCommande: {
+          include: {
+            produit: {
+              select: {
+                nom: true,
+                prix: true,
+                imageURL: true,
+              },
+            },
+          },
+        },
+        livraison: true,
+      },
+      orderBy: {
+        dateCommande: "desc",
+      },
     });
     res.status(200).json(commandes);
   } catch (error) {
@@ -41,12 +65,41 @@ const getCommandeById = async (req, res) => {
 // Update
 const updateCommande = async (req, res) => {
   try {
+    const { statutCommande, ...otherData } = req.body;
+
     const updated = await prisma.commande.update({
-      where: { idCommande: req.params.id },
-      data: req.body,
+      where: { idCommande: parseInt(req.params.id) },
+      data: {
+        ...otherData,
+        ...(statutCommande && { statutCommande }),
+        ...(statutCommande && { dateModification: new Date() }),
+      },
+      include: {
+        client: {
+          select: {
+            id: true,
+            nom: true,
+            prenom: true,
+            email: true,
+          },
+        },
+        lignesCommande: {
+          include: {
+            produit: {
+              select: {
+                nom: true,
+                prix: true,
+                imageURL: true,
+              },
+            },
+          },
+        },
+        livraison: true,
+      },
     });
     res.json(updated);
   } catch (error) {
+    console.error("Update commande error:", error);
     res.status(400).json({ error: error.message });
   }
 };
