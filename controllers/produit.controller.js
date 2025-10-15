@@ -31,7 +31,18 @@ const createProduit = async (req, res) => {
 // Read all
 const getAllProduits = async (req, res) => {
   try {
-    const produits = await prisma.produit.findMany();
+    const produits = await prisma.produit.findMany({
+      include: {
+        categorie: true,
+        fournisseur: {
+          select: {
+            id: true,
+            nom: true,
+            prenom: true,
+          },
+        },
+      },
+    });
     res.json(produits);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -43,6 +54,17 @@ const getProduitById = async (req, res) => {
   try {
     const produit = await prisma.produit.findUnique({
       where: { idProduit: req.params.id },
+      include: {
+        categorie: true,
+        fournisseur: {
+          select: {
+            id: true,
+            nom: true,
+            prenom: true,
+            email: true,
+          },
+        },
+      },
     });
     if (!produit) return res.status(404).json({ error: "Produit non trouvé" });
     res.json(produit);

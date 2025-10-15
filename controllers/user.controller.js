@@ -138,7 +138,7 @@ const getUserById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-//update user
+//update user(admin)
 const updateUser = async (req, res) => {
   try {
     const { mdp, ...rest } = req.body;
@@ -160,7 +160,36 @@ const updateUser = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+// Update Profile
+const updateProfile = async (req, res) => {
+  try {
+    const { id } = req.params; // user id from route
+    const { nom, prenom, mdp, adresse, image } = req.body;
 
+    // Prepare update data
+    const updateData = {};
+
+    if (nom) updateData.nom = nom;
+    if (prenom) updateData.prenom = prenom;
+    if (adresse) updateData.adresse = adresse;
+    if (image) updateData.image = image;
+
+    if (mdp) {
+      const hashedPassword = await bcrypt.hash(mdp, 10);
+      updateData.mdp = hashedPassword;
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: updateData,
+    });
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error("❌ Error in updateProfile:", error);
+    res.status(400).json({ error: error.message });
+  }
+};
 //delete user
 const deleteUser = async (req, res) => {
   try {
@@ -181,4 +210,5 @@ module.exports = {
   deleteUser,
   registerUser,
   loginUser,
+  updateProfile,
 };
